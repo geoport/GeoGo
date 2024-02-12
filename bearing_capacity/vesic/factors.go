@@ -1,8 +1,9 @@
 package vesic
 
 import (
-	pkg "GeoGo/internal"
 	"math"
+
+	pkg "github.com/geoport/GeoGo/internal"
 )
 
 // calcShapeFactors calculates the shape factors for foundation design in geotechnical engineering.

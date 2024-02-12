@@ -1,4 +1,4 @@
-module GeoGo
+module github.com/geoport/GeoGo
 
 go 1.21.6
 

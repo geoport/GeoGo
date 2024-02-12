@@ -1,9 +1,10 @@
 package bearingcapacity
 
 import (
-	"GeoGo/internal"
-	"GeoGo/models"
 	"testing"
+
+	"github.com/geoport/GeoGo/internal"
+	"github.com/geoport/GeoGo/models"
 
 	np "github.com/geoport/numpy4go/vectors"
 )

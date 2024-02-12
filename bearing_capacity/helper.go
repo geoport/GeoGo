@@ -1,7 +1,7 @@
 package bearingcapacity
 
 import (
-	"GeoGo/models"
+	"github.com/geoport/GeoGo/models"
 
 	np "github.com/geoport/numpy4go/vectors"
 )

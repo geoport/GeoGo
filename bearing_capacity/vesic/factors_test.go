@@ -1,8 +1,9 @@
 package vesic
 
 import (
-	pkg "GeoGo/internal"
 	"testing"
+
+	pkg "github.com/geoport/GeoGo/internal"
 )
 
 func TestCalcBearingCapacityFactors(t *testing.T) {

@@ -1,9 +1,10 @@
 package models
 
 import (
-	pkg "GeoGo/internal"
 	"reflect"
 	"testing"
+
+	pkg "github.com/geoport/GeoGo/internal"
 
 	np "github.com/geoport/numpy4go/vectors"
 )

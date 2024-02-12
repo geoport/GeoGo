@@ -1,8 +1,8 @@
 package vesic
 
 import (
-	helper "GeoGo/bearing_capacity"
-	"GeoGo/models"
+	helper "github.com/geoport/GeoGo/bearing_capacity"
+	"github.com/geoport/GeoGo/models"
 )
 
 func CalcBearingCapacity(
