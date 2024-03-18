@@ -85,7 +85,7 @@ func calcBearingCapacityFactors(phi float64) (float64, float64, float64) {
 //
 // - baseAngle (float64) : Angle of the foundation to the soil base (in degrees).
 //
-// - Vmax (float64): Maximum vertical load applied on the foundation (in tons).
+// - Vmax (float64): Maximum horizontal load applied on the foundation (in tons).
 //
 // - foundationPressure (float64): Pressure applied by the foundation on the soil (in tons per square meter), calculated as the vertical load divided by the foundation area.
 //
@@ -99,7 +99,7 @@ func calcBearingCapacityFactors(phi float64) (float64, float64, float64) {
 //
 // Usage Example:
 //
-// ic, iq, ig := calcLoadInclinationFactors(30, 0.5, foundationData, 100, 0.25)
+// ic, iq, ig := calcLoadInclinationFactors(30, 0.5, 20, 50, 100, 150)
 func calcLoadInclinationFactors(
 	phi, cohesion, B, L, baseAngle, Vmax, foundationPressure float64,
 ) (float64, float64, float64) {

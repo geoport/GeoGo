@@ -1,11 +1,11 @@
-package vesic
+package meyerhof
 
 import (
 	helper "github.com/geoport/GeoGo/bearing_capacity"
 	"github.com/geoport/GeoGo/models"
 )
 
-// CalcBearingCapacity is a function that calculates the ultimate and allowable bearing capacity of a foundation using the Vesic method.
+// CalcBearingCapacity is a function that calculates the ultimate and allowable bearing capacity of a foundation using the Meyerhofs method.
 //
 // Parameters:
 //
@@ -36,23 +36,32 @@ func CalcBearingCapacity(
 	Df := foundationData.FoundationDepth
 	B_ := foundationData.FoundationWidth
 	L_ := foundationData.FoundationLength
-	slopeAngle := foundationData.SlopeAngle
-	baseAngle := foundationData.FoundationBaseAngle
+
 	effectiveUnitWeight := helper.CalcEffectiveUnitWeight(Df, B_, soilProfile, term)
 	stress := helper.CalcStress(soilProfile, Df, term)
 
 	cohesion, phi := helper.GetSoilParams(Df, soilProfile, term)
 
 	Nc, Nq, Ng := calcBearingCapacityFactors(phi)
-	Sc, Sq, Sg := calcShapeFactors(B_, L_, Nq, Nc, phi)
+	Sc, Sq, Sg := calcShapeFactors(B_, L_, phi)
 	Dc, Dq, Dg := calcDepthFactors(Df, B_, phi)
-	Ic, Iq, Ig := calcLoadInclinationFactors(phi, cohesion, B_, L_, baseAngle, Vmax, foundationPressure)
-	Bc, Bq, Bg := calcBaseFactors(phi, slopeAngle, baseAngle)
-	Gc, Gq, Gg := calcGroundFactors(Iq, slopeAngle, phi)
+	Ic, Iq, Ig := calcLoadInclinationFactors(phi, B_, L_, Vmax, foundationPressure)
 
-	partC := cohesion * Nc * Sc * Dc * Bc * Gc
-	partQ := stress * Nq * Sq * Dq * Bq * Gq
-	partG := 0.5 * effectiveUnitWeight * B_ * Ng * Sg * Dg * Bg * Gg
+	var fc, fq, fg float64
+
+	if horizontalLoadX+horizontalLoadY > 0 {
+		fc = Ic
+		fq = Iq
+		fg = Ig
+	} else {
+		fc = Sc
+		fq = Sq
+		fg = Sg
+	}
+
+	partC := cohesion * Nc * fc * Dc
+	partQ := stress * Nq * fq * Dq
+	partG := 0.5 * effectiveUnitWeight * B_ * Ng * fg * Dg
 
 	ultimateBearingCapacity := partC + partQ + partG
 
@@ -78,13 +87,7 @@ func CalcBearingCapacity(
 			Iq: Iq,
 			Ig: Ig,
 		},
-		BaseFactors: BaseFactors{
-			Bc: Bc,
-			Bq: Bq,
-			Bg: Bg,
-		},
-		GroundFactors: GroundFactors{Gc: Gc, Gq: Gq, Gg: Gg},
-		SoilParams:    BCSoilParams{Cohesion: cohesion, FrictionAngle: phi, UnitWeight: effectiveUnitWeight},
+		SoilParams: BCSoilParams{Cohesion: cohesion, FrictionAngle: phi, UnitWeight: effectiveUnitWeight},
 	}
 
 	return result

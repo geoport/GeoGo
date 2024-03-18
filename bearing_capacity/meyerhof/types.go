@@ -1,12 +1,10 @@
-package vesic
+package meyerhof
 
 type Result struct {
 	BearingCapacityFactors  BearingCapacityFactors `json:"bearingCapacityFactors"`
 	ShapeFactors            ShapeFactors           `json:"shapeFactors"`
 	DepthFactors            DepthFactors           `json:"depthFactors"`
 	LoadInclinationFactors  LoadInclinationFactors `json:"loadInclinationFactors"`
-	GroundFactors           GroundFactors          `json:"groundFactors"`
-	BaseFactors             BaseFactors            `json:"baseFactors"`
 	SoilParams              BCSoilParams           `json:"soilParams"`
 	UltimateBearingCapacity float64                `json:"ultimateBearingCapacity"`
 }
@@ -39,16 +37,4 @@ type LoadInclinationFactors struct {
 	Iq float64 `json:"Iq"`
 	Ic float64 `json:"Ic"`
 	Ig float64 `json:"Ig"`
-}
-
-type GroundFactors struct {
-	Gq float64 `json:"Gq"`
-	Gc float64 `json:"Gc"`
-	Gg float64 `json:"Gg"`
-}
-
-type BaseFactors struct {
-	Bq float64 `json:"Bq"`
-	Bc float64 `json:"Bc"`
-	Bg float64 `json:"Bg"`
 }
