@@ -107,3 +107,28 @@ func GetSoilParams(layerDepth float64, soilProfile models.SoilProfile, term stri
 
 	return cohesion, frictionAngle
 }
+
+// CalcStress calculates the normal or effective stress at a given depth depending on the term.
+//
+// Parameters:
+//
+// -soilProfile (SoilProfile)
+//
+// -Df (float64) : Depth of the foundation in meters.
+//
+// -term (string) : Defines the type of analysis (short || long)
+//
+// Returns:
+//
+// -stress (float64) : Normal stress in short term or effective stress in long term at a given depth.
+func CalcStress(soilProfile models.SoilProfile, Df float64, term string) float64 {
+	var stress float64
+
+	if term == "short" {
+		stress = soilProfile.CalcNormalStress(Df)
+	} else {
+		stress = soilProfile.CalcEffectiveStress(Df)
+	}
+
+	return stress
+}

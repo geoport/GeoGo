@@ -25,7 +25,7 @@ func getSoilParams(Df float64, soilProfile models.SoilProfile) (float64, float64
 // CalcBearingCapacity is a function that returns allowable bearing capacity and the safety factor.
 func CalcBearingCapacity(
 	soilProfile models.SoilProfile, foundationData models.Foundation, foundationPressure float64,
-) models.TezcanOzdemir {
+) Result {
 	Df := foundationData.FoundationDepth
 	VS, unitWeight := getSoilParams(Df, soilProfile)
 	//VS is in m/s
@@ -44,7 +44,7 @@ func CalcBearingCapacity(
 		bearingCapacity = 0.025 * unitWeight * VS
 	}
 
-	result := models.TezcanOzdemir{
+	result := Result{
 		AllowableBearingCapacity: bearingCapacity,
 		SafetyFactor:             safetyFactor,
 		IsSafe:                   bearingCapacity >= foundationPressure,

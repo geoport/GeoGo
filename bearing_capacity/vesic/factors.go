@@ -33,7 +33,7 @@ import (
 // Sc, Sq, Sg := calcShapeFactors(2.0, 4.0, 30.0, 17.5, 35.0)
 func calcShapeFactors(B, L, Nq, Nc, phi float64) (float64, float64, float64) {
 	Sc := 1 + (B/L)*(Nq/Nc)
-	Sq := 1 + (B/L)*(math.Tan(pkg.Radian(phi)))
+	Sq := 1 + (B/L)*math.Tan(pkg.Radian(phi))
 	Sg := 1 - 0.4*B/L
 
 	Sg = math.Max(Sg, 0.6)

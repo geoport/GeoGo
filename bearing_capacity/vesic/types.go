@@ -1,6 +1,6 @@
-package models
+package vesic
 
-type Vesic struct {
+type Result struct {
 	BearingCapacityFactors   BearingCapacityFactors `json:"bearingCapacityFactors"`
 	ShapeFactors             ShapeFactors           `json:"shapeFactors"`
 	DepthFactors             DepthFactors           `json:"depthFactors"`
@@ -53,32 +53,4 @@ type BaseFactors struct {
 	Bq float64 `json:"Bq"`
 	Bc float64 `json:"Bc"`
 	Bg float64 `json:"Bg"`
-}
-
-type TezcanOzdemir struct {
-	VS                       float64 `json:"VS"`
-	UnitWeight               float64 `json:"unitWeight"`
-	UltimateBearingCapacity  float64 `json:"ultimateBearingCapacity"`
-	AllowableBearingCapacity float64 `json:"allowableBearingCapacity"`
-	IsSafe                   bool    `json:"isSafe"`
-	SafetyFactor             float64 `json:"safetyFactor"`
-}
-
-type RQD struct {
-	Kp                       float64 `json:"kp"`
-	Is50                     float64 `json:"Is50"`
-	UltimateBearingCapacity  float64 `json:"ultimateBearingCapacity"`
-	AllowableBearingCapacity float64 `json:"allowableBearingCapacity"`
-	IsSafe                   bool    `json:"isSafe"`
-	QLab                     float64 `json:"qLab"`
-	QFRatio                  float64 `json:"qfRatio"`
-	RQD                      float64 `json:"RQD"`
-}
-
-type PressuremeterBC struct {
-	Kp                       float64 `json:"kp"`
-	AllowableBearingCapacity float64 `json:"allowableBearingCapacity"`
-	IsSafe                   bool    `json:"isSafe"`
-	EffectivePressure        float64 `json:"effectivePressure"`
-	NetEffectivePressure     float64 `json:"netEffectivePressure"`
 }

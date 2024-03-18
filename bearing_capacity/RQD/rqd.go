@@ -25,7 +25,7 @@ func getQfRatio(rqd float64) float64 {
 // CalcBearingCapacity is a function that returns ultimate and allowable bearing capacity, qf and qLab.
 func CalcBearingCapacity(
 	soilProfile models.SoilProfile, foundationData models.Foundation, foundationPressure float64,
-) models.RQD {
+) Result {
 	Df := foundationData.FoundationDepth
 	layerIndex := soilProfile.GetLayerIndex(Df)
 	layer := soilProfile.Layers[layerIndex]
@@ -40,7 +40,7 @@ func CalcBearingCapacity(
 	ultimateBearingCapacity := qLab * qfRatio
 	allowableBearingCapacity := ultimateBearingCapacity / 7
 
-	result := models.RQD{
+	result := Result{
 		UltimateBearingCapacity:  ultimateBearingCapacity,
 		AllowableBearingCapacity: allowableBearingCapacity,
 		QFRatio:                  qfRatio,

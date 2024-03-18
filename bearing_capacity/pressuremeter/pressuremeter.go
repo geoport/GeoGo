@@ -63,13 +63,13 @@ func getKp(foundationData models.Foundation, soilProfile models.SoilProfile, eff
 
 func CalcBearingCapacity(
 	soilProfile models.SoilProfile, foundationData models.Foundation, foundationPressure float64, psData models.Pressuremeter,
-) models.PressuremeterBC {
+) Result {
 	effectivePressure, netEffectivePressure := calcEffectivePressure(psData)
 	kp := getKp(foundationData, soilProfile, effectivePressure)
 
 	quNet := kp * netEffectivePressure
 
-	result := models.PressuremeterBC{
+	result := Result{
 		EffectivePressure:        effectivePressure,
 		NetEffectivePressure:     netEffectivePressure,
 		AllowableBearingCapacity: quNet,

@@ -7,7 +7,7 @@ import (
 	"github.com/geoport/GeoGo/internal"
 )
 
-func TestCalcBearingCapacityByVesic(t *testing.T) {
+func TestCalcBearingCapacity(t *testing.T) {
 	soilProfile := dt.SoilProfile.Copy()
 	foundationData := dt.FoundationData
 
