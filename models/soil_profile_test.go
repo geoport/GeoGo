@@ -140,3 +140,16 @@ func TestSoilProfile_CalcNormalStress(t *testing.T) {
 		t.Errorf("Expected %v, got %v", expectedOutputs3, output3)
 	}
 }
+
+func TestSoilProfile_CalcEffectiveStress(t *testing.T) {
+	soilProfile.CalcLayerDepths()
+	checkPoints := []float64{0.5, 1.5}
+
+	expectedOutputs := []float64{0.9, 2.36}
+
+	output := np.Apply(checkPoints, soilProfile.CalcEffectiveStress)
+
+	if reflect.DeepEqual(np.Round(output, 2), expectedOutputs) == false {
+		t.Errorf("Expected %v, got %v", expectedOutputs, output)
+	}
+}

@@ -99,6 +99,15 @@ func (sp *SoilProfile) GetLayerDepths() []float64 {
 	return depths
 }
 
+func (sp *SoilProfile) GetLayerCenters() []float64 {
+	centers := make([]float64, len(sp.Layers))
+
+	for i, layer := range sp.Layers {
+		centers[i] = layer.Center
+	}
+	return centers
+}
+
 // SliceProfile
 func (sp *SoilProfile) SliceProfile(minDepth, maxDepth float64) SoilProfile {
 	var slicedProfile SoilProfile
@@ -194,6 +203,16 @@ func (sp *SoilProfile) CalcNormalStress(depth float64) float64 {
 		stresses = append(stresses, stress+stresses[i])
 	}
 	return stresses[len(stresses)-1]
+}
+
+// CalcEffectiveStress returns the effective stress at the given depth
+func (sp *SoilProfile) CalcEffectiveStress(depth float64) float64 {
+	normalStress := sp.CalcNormalStress(depth)
+	if sp.Gwt >= depth {
+		return normalStress
+	} else {
+		return normalStress - (depth-sp.Gwt)*0.981
+	}
 }
 
 func (sp *SoilProfile) Copy() SoilProfile {

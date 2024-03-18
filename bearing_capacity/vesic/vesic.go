@@ -8,7 +8,7 @@ import (
 func CalcBearingCapacity(
 	soilProfile models.SoilProfile, foundationData models.Foundation,
 	horizontalLoadX, horizontalLoadY, foundationPressure float64, term string,
-) models.VesicBearingCapacity {
+) models.Vesic {
 	//unitWeight is in ton/m3
 	//cohesion is in ton/m2
 	//normalStress is in t/m2
@@ -38,31 +38,37 @@ func CalcBearingCapacity(
 	ultimateBearingCapacity := partC + partQ + partG
 	allowableBearingCapacity := ultimateBearingCapacity / 1.5
 
-	result := models.VesicBearingCapacity{
+	result := models.Vesic{
 		UltimateBearingCapacity:  ultimateBearingCapacity,
 		AllowableBearingCapacity: allowableBearingCapacity,
-		Nc:                       Nc,
-		Nq:                       Nq,
-		Ng:                       Ng,
-		Sc:                       Sc,
-		Sq:                       Sq,
-		Sg:                       Sg,
-		Dc:                       Dc,
-		Dq:                       Dq,
-		Dg:                       Dg,
-		Ic:                       Ic,
-		Iq:                       Iq,
-		Ig:                       Ig,
-		Bc:                       Bc,
-		Bq:                       Bq,
-		Bg:                       Bg,
-		Gc:                       Gc,
-		Gq:                       Gq,
-		Gg:                       Gg,
-		UnitWeight:               effectiveUnitWeight,
-		Cohesion:                 cohesion,
-		FrictionAngle:            phi,
-		IsSafe:                   allowableBearingCapacity >= foundationPressure,
+		BearingCapacityFactors: models.BearingCapacityFactors{
+			Nc: Nc,
+			Nq: Nq,
+			Ng: Ng,
+		},
+		ShapeFactors: models.ShapeFactors{
+			Sc: Sc,
+			Sq: Sq,
+			Sg: Sg,
+		},
+		DepthFactors: models.DepthFactors{
+			Dc: Dc,
+			Dq: Dq,
+			Dg: Dg,
+		},
+		LoadInclinationFactors: models.LoadInclinationFactors{
+			Ic: Ic,
+			Iq: Iq,
+			Ig: Ig,
+		},
+		BaseFactors: models.BaseFactors{
+			Bc: Bc,
+			Bq: Bq,
+			Bg: Bg,
+		},
+		GroundFactors: models.GroundFactors{Gc: Gc, Gq: Gq, Gg: Gg},
+		SoilParams:    models.BCSoilParams{Cohesion: cohesion, FrictionAngle: phi, UnitWeight: effectiveUnitWeight},
+		IsSafe:        allowableBearingCapacity >= foundationPressure,
 	}
 
 	return result
