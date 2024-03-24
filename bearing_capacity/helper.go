@@ -132,3 +132,53 @@ func CalcStress(soilProfile models.SoilProfile, Df float64, term string) float64
 
 	return stress
 }
+
+// CalcEccentricity calculates the eccentricity of the vertical load.
+//
+// Parameters:
+//
+// -moment (float64) : Moment acting on the foundation in ton.m.
+//
+// -verticalLoad (float64) : Vertical load acting on the foundation in ton.
+//
+// Returns:
+//
+// -eccentricity (float64) : Eccentricity of the vertical load in meters.
+func CalcEccentricity(moment, verticalLoad float64) float64 {
+	return moment / verticalLoad
+}
+
+// CalcEffectiveDimensions calculates the effective dimensions of the foundation.
+//
+// Parameters:
+//
+// -foundation (Foundation)
+//
+// -loads (Load)
+//
+// Returns:
+//
+// -B_ (float64) : Effective width of the foundation in meters.
+//
+// -L_ (float64) : Effective length of the foundation in meters.
+func CalcEffectiveDimensions(foundation models.Foundation, loads models.Load) (float64, float64) {
+	B := foundation.FoundationWidth
+	L := foundation.FoundationLength
+
+	Mx := loads.MomentLoadX
+	My := loads.MomentLoadY
+
+	P := loads.VerticalLoad
+
+	ex := CalcEccentricity(Mx, P)
+	ey := CalcEccentricity(My, P)
+
+	B_ := B - 2*ex
+	L_ := L - 2*ey
+
+	if B_ > L_ {
+		return L_, B_
+	} else {
+		return B_, L_
+	}
+}

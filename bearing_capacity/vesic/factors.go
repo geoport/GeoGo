@@ -87,7 +87,7 @@ func calcBearingCapacityFactors(phi float64) (float64, float64, float64) {
 //
 // - Vmax (float64): Maximum horizontal load applied on the foundation (in tons).
 //
-// - foundationPressure (float64): Pressure applied by the foundation on the soil (in tons per square meter), calculated as the vertical load divided by the foundation area.
+// - verticalLoad (float64): Load applied by the foundation on the soil (in tons).
 //
 // Returns:
 //
@@ -101,9 +101,8 @@ func calcBearingCapacityFactors(phi float64) (float64, float64, float64) {
 //
 // ic, iq, ig := calcLoadInclinationFactors(30, 0.5, 20, 50, 100, 150)
 func calcLoadInclinationFactors(
-	phi, cohesion, B, L, baseAngle, Vmax, foundationPressure float64,
+	phi, cohesion, B, L, baseAngle, Vmax, verticalLoad float64,
 ) (float64, float64, float64) {
-	F := foundationPressure * B * L
 	Nc, Nq, _ := calcBearingCapacityFactors(phi)
 
 	var ic, iq, ig float64
@@ -117,8 +116,8 @@ func calcLoadInclinationFactors(
 			iq = 1
 			ig = 1
 		} else {
-			iq = math.Pow(1-(Vmax/(F+A*Ca*(1/math.Tan(pkg.Radian(phi))))), m)
-			ig = math.Pow(1-(Vmax/(F+A*Ca*(1/math.Tan(pkg.Radian(phi))))), m+1)
+			iq = math.Pow(1-(Vmax/(verticalLoad+A*Ca*(1/math.Tan(pkg.Radian(phi))))), m)
+			ig = math.Pow(1-(Vmax/(verticalLoad+A*Ca*(1/math.Tan(pkg.Radian(phi))))), m+1)
 			ic = iq - (1-iq)/(Nq-1)
 		}
 	} else {

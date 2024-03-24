@@ -10,11 +10,12 @@ import (
 func TestCalcBearingCapacity(t *testing.T) {
 	soilProfile := dt.SoilProfile.Copy()
 	foundationData := dt.FoundationData
+	loads := dt.LoadData
 
 	soilProfile.CalcLayerDepths()
 	expected := 76.77
 	output := CalcBearingCapacity(
-		soilProfile, foundationData, 150, 150, 50, "short",
+		soilProfile, foundationData, loads, "short",
 	)
 	bearingCapacity := output.UltimateBearingCapacity
 	if !internal.AssertFloat(expected, bearingCapacity, 0.1) {

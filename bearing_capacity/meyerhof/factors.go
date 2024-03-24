@@ -84,33 +84,33 @@ func calcBearingCapacityFactors(phi float64) (float64, float64, float64) {
 //
 // - phi (float64): Angle of internal friction of the soil (in degrees), affecting the soil's shear strength.
 //
-// - B (float64): Width of the foundation (in meters).
-//
-// - L (float64): Length of the foundation (in meters).
-//
 // - Vmax (float64): Maximum horizontal load applied on the foundation (in tons).
 //
-// - foundationPressure (float64): Pressure applied by the foundation on the soil (in tons per square meter), calculated as the vertical load divided by the foundation area.
+// - verticalLoad (float64): Load applied by the foundation on the soil (in tons).
 //
 // Returns:
 //
-// - ic (float64): Load inclination factor for cohesion, modifying the cohesion bearing capacity factor (Nc) based on the load's inclination.
+// - ic (float64)
 //
-// - iq (float64): Load inclination factor for the depth (related to Nq), adjusting the bearing capacity factor Nq considering the inclined load.
+// - iq (float64)
 //
-// - ig (float64): Load inclination factor for the weight of the soil (related to Ng), affecting the bearing capacity related to the soil's weight above the failure wedge.
+// - ig (float64)
 //
 // Usage Example:
 //
 // ic, iq, ig := calcLoadInclinationFactors(30, 20, 50, 100, 150)
 func calcLoadInclinationFactors(
-	phi, B, L, Vmax, foundationPressure float64,
+	phi, Vmax, verticalLoad float64,
 ) (float64, float64, float64) {
-	verticalLoad := foundationPressure * B * L
-
+	var ig float64
 	delta := math.Atan(Vmax / verticalLoad)
 
-	ig := math.Pow(1-delta/math.Pi, 2)
+	if phi == 0 {
+		ig = 1
+	} else {
+		ig = math.Pow(1-delta/pkg.Radian(phi), 2)
+	}
+
 	ic := math.Pow(1-2*delta/math.Pi, 2)
 	iq := ic
 

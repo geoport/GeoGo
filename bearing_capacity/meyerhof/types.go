@@ -6,6 +6,8 @@ type Result struct {
 	DepthFactors            DepthFactors           `json:"depthFactors"`
 	LoadInclinationFactors  LoadInclinationFactors `json:"loadInclinationFactors"`
 	SoilParams              BCSoilParams           `json:"soilParams"`
+	EffectiveWidth          float64                `json:"effectiveWidth"`
+	EffectiveLength         float64                `json:"effectiveLength"`
 	UltimateBearingCapacity float64                `json:"ultimateBearingCapacity"`
 }
 

@@ -46,7 +46,7 @@ func TestCalcLoadInclinationFactors(t *testing.T) {
 	expectedIq := 0.978
 	expectedIg := 0.965
 
-	Ic, Iq, Ig := calcLoadInclinationFactors(30, 5, 10, 20, 10, 150, 50)
+	Ic, Iq, Ig := calcLoadInclinationFactors(30, 5, 10, 20, 10, 150, 10000)
 
 	if !pkg.AssertFloat(Ic, expectedIc, 0.01) {
 		t.Errorf("Got %v, want %v for Ic", Ic, expectedIc)

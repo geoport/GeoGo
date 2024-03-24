@@ -13,11 +13,7 @@ import (
 //
 // - foundationData (models.Foundation): The foundation data to be analyzed.
 //
-// - horizontalLoadX (float64): The horizontal load in the X direction (in t/m).
-//
-// - horizontalLoadY (float64): The horizontal load in the Y direction (in t/m).
-//
-// - foundationPressure (float64): The foundation pressure (in t/m2).
+// - loads (models.Load) : The loads applied to the foundation.
 //
 // - term (string): Defines the type of analysis (short || long).
 //
@@ -25,17 +21,20 @@ import (
 //
 // - result (Result): The result of the bearing capacity analysis.
 func CalcBearingCapacity(
-	soilProfile models.SoilProfile, foundationData models.Foundation,
-	horizontalLoadX, horizontalLoadY, foundationPressure float64, term string,
+	soilProfile models.SoilProfile, foundationData models.Foundation, loads models.Load, term string,
 ) Result {
 	//unitWeight is in t/m3
 	//cohesion is in t/m2
 	//stress is in t/m2
 	//bearing capacity is in t/m2
-	Vmax := max(horizontalLoadX, horizontalLoadY)
+	horizontalLoadX := loads.HorizontalLoadX
+	horizontalLoadY := loads.HorizontalLoadY
+	verticalLoad := loads.VerticalLoad
 	Df := foundationData.FoundationDepth
-	B_ := foundationData.FoundationWidth
-	L_ := foundationData.FoundationLength
+
+	B_, L_ := helper.CalcEffectiveDimensions(foundationData, loads)
+	Vmax := max(horizontalLoadX, horizontalLoadY)
+
 	slopeAngle := foundationData.SlopeAngle
 	baseAngle := foundationData.FoundationBaseAngle
 	effectiveUnitWeight := helper.CalcEffectiveUnitWeight(Df, B_, soilProfile, term)
@@ -46,7 +45,7 @@ func CalcBearingCapacity(
 	Nc, Nq, Ng := calcBearingCapacityFactors(phi)
 	Sc, Sq, Sg := calcShapeFactors(B_, L_, Nq, Nc, phi)
 	Dc, Dq, Dg := calcDepthFactors(Df, B_, phi)
-	Ic, Iq, Ig := calcLoadInclinationFactors(phi, cohesion, B_, L_, baseAngle, Vmax, foundationPressure)
+	Ic, Iq, Ig := calcLoadInclinationFactors(phi, cohesion, B_, L_, baseAngle, Vmax, verticalLoad)
 	Bc, Bq, Bg := calcBaseFactors(phi, slopeAngle, baseAngle)
 	Gc, Gq, Gg := calcGroundFactors(Iq, slopeAngle, phi)
 
